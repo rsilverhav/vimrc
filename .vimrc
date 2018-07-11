@@ -123,6 +123,13 @@ function! OpenHeaderSource()
   execute "find " . newfilename
 endfunction
 
+function! Ctrlf()
+  let query = input('Search: ')
+  silent execute "grep! -rI " . shellescape(query) . " ."
+  copen
+  redraw!
+endfunction
+
 
 "
 "
@@ -164,7 +171,7 @@ let g:ctrlp_by_filename = 1
 let mapleader=" "
 nnoremap <Leader>g :CtrlPBufTag<CR>
 nnoremap <Leader>c :CtrlPCurWD<CR>
-nnoremap <Leader>* :exe('vimgrep ' . expand("<cword>") . ' **/* \| copen')<CR>
+nnoremap <leader>* :silent execute "grep! -rI " . shellescape(expand("<cword>")) . " ."<cr>:copen<cr>:redraw!<cr>
 nnoremap <C-k> :tabnext<CR>
 nnoremap <C-j> :tabprevious<CR>
 nnoremap <C-n> :tablast<CR>:tabnew<CR>
@@ -175,7 +182,7 @@ nnoremap N Nzz
 noremap <C-c> <ESC>
 nnoremap <C-c> :ccl <CR>
 nnoremap <C-h> :call OpenHeaderSource() <CR>
-nnoremap <C-f> :NERDTreeFind <CR>
+nnoremap <C-f> :call Ctrlf() <CR>
 nnoremap <Leader>t :call CreateTp() <CR>
 nnoremap <Leader>T :call CreateTpRef() <CR>
 nnoremap <Leader>r :! python3 % <CR>
